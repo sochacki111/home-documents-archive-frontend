@@ -7,7 +7,7 @@ import Auxiliary from '../../../hoc/Auxiliary/Auxiliary';
 const navigationItems = (props) => (
   <ul className={classes.NavigationItems}>
     <NavigationItem link="/" exact>
-      Stock Photography
+      Home Documents Archive
     </NavigationItem>
     {props.isAuthenticated ? (
       <Auxiliary>

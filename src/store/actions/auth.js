@@ -1,10 +1,11 @@
+import Cookies from 'js-cookie';
+import { toast } from 'react-toastify';
 import axios from '../../axios-documents';
 import * as actionTypes from './actionTypes';
-import { toast } from 'react-toastify';
 
 export const authStart = () => {
   return {
-    type: actionTypes.AUTH_START
+    type: actionTypes.AUTH_START,
   };
 };
 
@@ -13,14 +14,14 @@ export const authSuccess = (token, userId, userEmail) => {
     type: actionTypes.AUTH_SUCCESS,
     idToken: token,
     userId: userId,
-    userEmail: userEmail
+    userEmail: userEmail,
   };
 };
 
 export const authFail = (error) => {
   return {
     type: actionTypes.AUTH_FAIL,
-    error: error
+    error: error,
   };
 };
 
@@ -28,8 +29,9 @@ export const logout = () => {
   localStorage.removeItem('token');
   localStorage.removeItem('expirationDate');
   localStorage.removeItem('userId');
+  Cookies.remove('Authentication');
   return {
-    type: actionTypes.AUTH_LOGOUT
+    type: actionTypes.AUTH_LOGOUT,
   };
 };
 
@@ -46,36 +48,37 @@ export const auth = (email, password, isSignup) => {
     dispatch(authStart());
     const authData = {
       email: email,
-      password: password
+      password: password,
     };
-    let url = '/signup';
+    let url = '/authentication/register';
     if (!isSignup) {
-      url = '/signin';
+      url = '/authentication/log-in';
     }
     try {
-      const { data } = await axios.post(url, authData);
+      const { data, headers } = await axios.post(url, authData, {
+        withCredentials: true,
+      });
       const toastMsg = isSignup
         ? `User: "${email}" has been created!`
         : `Welcome ${email}!`;
       toast.success(toastMsg);
-      const expirationDate = new Date(
-        new Date().getTime() + data.expiresIn * 1000
-      );
-      localStorage.setItem('token', data.idToken);
+      const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
+      localStorage.setItem('token', Cookies.get('Authentication'));
       localStorage.setItem('expirationDate', expirationDate);
-      localStorage.setItem('userId', data.localId);
+      localStorage.setItem('userId', data._id);
       // Capture data sent from the server
       // TODO Refactor. Only dispatch on sign in
       if (isSignup) {
-        dispatch(authSuccess(null, data.localId, data.userEmail));
+        dispatch(authSuccess(null, data._id, data.email));
         // SIGN IN
       } else {
-        dispatch(authSuccess(data.idToken, data.localId, data.userEmail));
-        dispatch(checkAuthTimeout(data.expiresIn));
+        dispatch(
+          authSuccess(Cookies.get('Authentication'), data._id, data.email)
+        );
+        dispatch(checkAuthTimeout(3600));
         return true;
       }
     } catch (err) {
-      console.log(err.response.data.error);
       dispatch(authFail(err.response.data.error));
     }
   };

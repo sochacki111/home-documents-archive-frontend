@@ -1,6 +1,5 @@
-import * as actionTypes from './actionTypes';
 import axios from '../../axios-documents';
-import { toast } from 'react-toastify';
+import * as actionTypes from './actionTypes';
 
 export const fetchDocumentSuccess = (document) => {
   return {
@@ -68,7 +67,8 @@ export const addDocument = (documentData, token) => {
   return (dispatch) => {
     dispatch(addDocumentStart());
     const config = {
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { Authorization: `Bearer ${token}` },
+      withCredentials: true
     };
     axios
       .post('/documents', documentData, config)

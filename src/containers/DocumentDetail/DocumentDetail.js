@@ -49,7 +49,7 @@ const DocumentDetail = (props) => {
               height: "auto",
             }}
             src={loadedDocument.image}
-            alt="Documentgraphy"
+            alt="Document"
           />
         </div>
         <div style={{ float: "left", marginLeft: "5%" }}>

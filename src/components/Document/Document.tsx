@@ -14,13 +14,11 @@ interface Props {
 }
 
 export const Document: React.FC<Props> = (props) => {
-  console.log(props);
-  
   return (
     <article className="Document" /* onClick={props.clicked} */>
       <img
         src={props.image}
-        alt="thumbnail of documentgraphy to buy"
+        alt="thumbnail of document"
         width="100"
         height="100"
       />
@@ -28,7 +26,7 @@ export const Document: React.FC<Props> = (props) => {
       {/* {props.author.email} */}
       <h4>Title: </h4>
       {props.title}
-      <h4>Price: </h4>
+      <h4>Description: </h4>
       ${props.description}
     </article>
   );

@@ -1,12 +1,12 @@
-import GridList from "@material-ui/core/GridList";
-import GridListTile from "@material-ui/core/GridListTile";
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { Link, RouteComponentProps } from "react-router-dom";
-import axios from "../../axios-documents";
-import { Document } from "../../components/Document/Document";
-import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
-import "./Documents.css";
+import GridList from '@material-ui/core/GridList';
+import GridListTile from '@material-ui/core/GridListTile';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Link, RouteComponentProps } from 'react-router-dom';
+import axios from '../../axios-documents';
+import { Document } from '../../components/Document/Document';
+import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
+import './Documents.css';
 
 interface IProps extends RouteComponentProps {
   isAuthenticated: boolean; // TODO Delete?
@@ -38,14 +38,12 @@ class Documents extends Component<IProps, IState> {
   state: IState = {
     documents: [],
     error: false,
-    category: this.props.match.params.id ? this.props.match.params.id : "",
-    searchKeyword: "",
-    sortOrder: "",
+    category: this.props.match.params.id ? this.props.match.params.id : '',
+    searchKeyword: '',
+    sortOrder: '',
   };
 
   componentDidMount() {
-    console.log("before fetchDocuments");
-
     this.fetchDocuments();
   }
 
@@ -61,13 +59,15 @@ class Documents extends Component<IProps, IState> {
   async fetchDocuments() {
     try {
       const config = {
-        headers: { Authorization: `Bearer ${this.props.token}`, 'Access-Control-Allow-Origin': '*' },
+        headers: {
+          Authorization: `Bearer ${this.props.token}`,
+          'Access-Control-Allow-Origin': '*',
+        },
+        withCredentials: true,
       };
       const response = await axios.get(`/documents`, config);
       if (response.data) {
         this.setState({ documents: response.data });
-        console.log('documents', this.state.documents);
-        
       }
     } catch (err) {
       console.log(err);
@@ -94,7 +94,7 @@ class Documents extends Component<IProps, IState> {
         <GridList cellHeight={160} cols={4}>
           {this.state.documents.map((document) => (
             <GridListTile cols={2} rows={1} key={document._id}>
-              <Link to={"/documents/" + document._id}>
+              <Link to={'/documents/' + document._id}>
                 <img
                   src={document.image}
                   alt={document.description}
@@ -108,66 +108,7 @@ class Documents extends Component<IProps, IState> {
     }
 
     return (
-      <div style={{ marginTop: "15vh" }}>
-        {/* <FormGroup
-          style={{ width: "20%", margin: "auto", marginBottom: "5vh" }}
-        >
-          <FormControl>
-            <form onSubmit={this.submitHandler} style={{ width: "100%" }}>
-              <InputLabel htmlFor="searchKeyword">Search keyword</InputLabel>
-              <Input
-                style={{ width: "75%", float: "left" }}
-                id="searchKeyword"
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  this.setState({ searchKeyword: e.target.value })
-                }
-              />
-              <Button
-                type="submit"
-                style={{ marginTop: "1.2vh", width: "20%", float: "right" }}
-                variant="contained"
-                color="primary"
-              >
-                Search
-              </Button>
-            </form>
-          </FormControl>
-          <FormControl>
-            <InputLabel htmlFor="sortOrder" shrink>
-              Sort By
-            </InputLabel>
-            <Select
-              id="sortOrder"
-              onChange={this.sortHandler}
-              style={{ textAlign: "left" }}
-              displayEmpty
-              value={this.state.sortOrder}
-            >
-              <MenuItem value="">Newest</MenuItem>
-              <MenuItem value="oldest">Oldest</MenuItem>
-              <MenuItem value="lowest">Price - Low to High</MenuItem>
-              <MenuItem value="highest">Price - High to Low</MenuItem>
-            </Select>
-          </FormControl>
-          <FormControl>
-            <InputLabel htmlFor="category" shrink>
-              Category
-            </InputLabel>
-            <Select
-              name="category"
-              onChange={this.categoryHandler}
-              style={{ textAlign: "left" }}
-              displayEmpty
-              value={this.state.category}
-            >
-              <MenuItem value="">All</MenuItem>
-              <MenuItem value="Fashion">Fashion</MenuItem>
-              <MenuItem value="Aerial">Aerial</MenuItem>
-              <MenuItem value="Travel">Travel</MenuItem>
-              <MenuItem value="Animals">Animals</MenuItem>
-            </Select>
-          </FormControl>
-        </FormGroup> */}
+      <div style={{ marginTop: '15vh' }}>
         <section className="Documents">{documents}</section>
       </div>
     );
