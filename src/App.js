@@ -22,7 +22,6 @@ function App() {
 
   let routes = (
     <Switch>
-      <Route path="/documents/:id" component={DocumentDetail} />
       <Route path="/auth" component={Auth} />
       <Redirect to="/auth" />
     </Switch>
