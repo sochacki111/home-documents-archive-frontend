@@ -55,15 +55,24 @@ export const auth = (email, password, isSignup) => {
       url = '/authentication/log-in';
     }
     try {
-      const { data, headers } = await axios.post(url, authData, {
+      const { data, ...headers } = await axios.post(url, authData, {
         withCredentials: true,
       });
+      console.log('headers', JSON.stringify(headers));
+      // console.log('data', JSON.stringify(data));
+      console.log('headers token1', headers.headers.token);
+      // console.log('headers token1', headers.token);
+      // console.log('headers token2', headers.get("token"));
+      // console.log('headers token1', headers['token']);
       const toastMsg = isSignup
         ? `User: "${email}" has been created!`
         : `Welcome ${email}!`;
       toast.success(toastMsg);
       const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
-      localStorage.setItem('token', Cookies.get('Authentication'));
+
+      // localStorage.setItem('token', headers.get('token'));
+      // localStorage.setItem('token', Cookies.get('Authentication'));
+      localStorage.setItem('token', headers.headers.token);
       localStorage.setItem('expirationDate', expirationDate);
       localStorage.setItem('userId', data._id);
       // Capture data sent from the server
