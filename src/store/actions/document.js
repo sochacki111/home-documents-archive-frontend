@@ -25,7 +25,6 @@ export const fetchDocument = (documentId) => async (dispatch, getState) => {
   const {
     auth: { token }
   } = getState();
-  console.log('token', token);
   const config = {
     headers: { token: localStorage.getItem('token') },
   };

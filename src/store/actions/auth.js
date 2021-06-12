@@ -58,12 +58,6 @@ export const auth = (email, password, isSignup) => {
       const { data, ...headers } = await axios.post(url, authData, {
         withCredentials: true,
       });
-      console.log('headers', JSON.stringify(headers));
-      // console.log('data', JSON.stringify(data));
-      console.log('headers token1', headers.headers.token);
-      // console.log('headers token1', headers.token);
-      // console.log('headers token2', headers.get("token"));
-      // console.log('headers token1', headers['token']);
       const toastMsg = isSignup
         ? `User: "${email}" has been created!`
         : `Welcome ${email}!`;
