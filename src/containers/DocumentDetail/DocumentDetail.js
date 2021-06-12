@@ -27,8 +27,13 @@ const DocumentDetail = (props) => {
     dispatch(fetchDocument(documentId));
   }, [dispatch, documentId]);
   const [shareEmail, setShareEmail] = useState('');
-  const share = () => {
-    axios.post(`/documents/share`, { documentId, shareEmail });
+  const share = async () => {
+    try {
+      await axios.post(`/documents/share`, { documentId, shareEmail });
+      alert('document has been shared!')
+    } catch (err) {
+      console.log(err);
+    }
   };
   let document = <p style={{ textAlign: 'center' }}>Loading...</p>;
   if (loadedDocument) {
@@ -101,7 +106,6 @@ const DocumentDetail = (props) => {
             variant="contained"
             onClick={() => {
               share();
-              alert('clicked');
             }}
           >
             Share
