@@ -60,11 +60,17 @@ class Documents extends Component<IProps, IState> {
     try {
       const config = {
         headers: {
-          Authorization: `Bearer ${this.props.token}`,
-          'Access-Control-Allow-Origin': '*',
+          // Authorization: `Bearer ${localStorage.getItem('token')}`,
+          token: localStorage.getItem('token'),
         },
-        withCredentials: true,
       };
+      // const config = {
+      //   headers: {
+      //     Authorization: `Bearer ${this.props.token}`,
+      //     'Access-Control-Allow-Origin': '*',
+      //   },
+      //   withCredentials: true,
+      // };
       const response = await axios.get(`/documents`, config);
       if (response.data) {
         this.setState({ documents: response.data });
