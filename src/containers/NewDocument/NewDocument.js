@@ -104,7 +104,6 @@ const NewDocument = (props) => {
           <InputLabel htmlFor="description">Description</InputLabel>
           <Input
             id="description"
-            // min="1"
             type="text"
             value={description || ''}
             onChange={(event) => setDescription(event.target.value)}
