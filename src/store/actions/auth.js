@@ -56,7 +56,7 @@ export const auth = (email, password, isSignup) => {
     }
     try {
       const { data, ...headers } = await axios.post(url, authData, {
-        withCredentials: true,
+        // withCredentials: true,
       });
       const toastMsg = isSignup
         ? `User: "${email}" has been created!`
